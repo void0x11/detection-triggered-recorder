@@ -1,59 +1,61 @@
 # Detection-Triggered Recorder (Void-DTR)
 
-An **intelligent, event-driven surveillance system** that automatically captures video and screenshots when humans are detected in real-time using **AI vision processing**.
-
----
+An intelligent, event-driven surveillance system that automatically captures video and screenshots when humans are detected in real-time using **AI vision processing**.
 
 ## Overview
 
-**Detection-Triggered Recorder** is a sophisticated **security monitoring application**, designed for **research** and **autonomous surveillance**. It continuously monitors a USB-connected camera feed, performs real-time human detection using **YOLOv8**, and automatically initiates recording only when humans are detected in the scene. This event-driven approach significantly reduces storage requirements compared to traditional 24/7 recording while ensuring comprehensive event documentation.
-
----
+**Detection-Triggered Recorder** is a sophisticated security monitoring application designed for **research** and **autonomous surveillance**. It continuously monitors a USB-connected camera feed, performs real-time human detection using **YOLOv8**, and automatically initiates recording only when humans are detected. This event-driven approach drastically reduces storage requirements compared to traditional 24/7 recording, while still ensuring comprehensive event documentation.
 
 ## Key Features
 
-### Core Functionality
-- **Real-Time Human Detection**: YOLOv8 Convolutional Neural Network (CNN) processes video frames at 30 FPS for instant detection.
-- **Automatic Recording**: Only records when humans are detected, saving storage space.
-- **Smart Cooldown Logic**: 5-second cooldown after detection to prevent fragmented clips.
-- **Timestamped Snapshots**: Automatically captures screenshots every 2 seconds during detection events.
-- **Low CPU Usage**: Operates in standby mode, consuming minimal resources while remaining responsive to detections.
+### 🎯 Core Functionality
+- **Real-Time Human Detection**: YOLOv8 neural network processes video frames at 30 FPS for instantaneous human detection.
+- **Automatic Recording**: Initiates recording only when a person is detected, saving storage space.
+- **Smart Cooldown Logic**: A 5-second cooldown after the last detection prevents fragmented video clips.
+- **Automatic Snapshots**: Captures timestamped screenshots every 2 seconds during detection events.
+- **Continuous Monitoring**: Operates in standby mode, consuming minimal CPU resources while remaining responsive to human presence.
 
-### Recording Features
-- **High-Quality Video**: 1920×1080 resolution at 30 FPS in MP4 format with H.264 encoding.
-- **Automatic Timestamping**: Video files are automatically timestamped in `YYYYMMDD_HHMMSS` format.
-- **Efficient Storage**: Video files are stored in a `recordings/` directory.
-- **H.264 Compression**: Balances video quality and file size.
+### 🎬 Recording Features
+- **High-Quality Video**: Captures video at 1920×1080 resolution and 30 FPS in MP4 format with H.264 encoding.
+- **Automatic Timestamping**: All recordings are automatically timestamped in filenames (`YYYYMMDD_HHMMSS` format).
+- **Smart Storage**: Videos are stored in the `recordings/` directory.
+- **Efficient Compression**: H.264 compression balances video quality and file size.
 
-### Screenshot Features
-- **Event-Triggered Snapshots**: Captures images every 2 seconds during detection.
-- **Timestamp Overlay**: Displays detection timestamps on each captured image.
-- **Organized Storage**: Screenshots stored in the `snapshots/` directory with millisecond precision.
-- **Smart Snapshot Frequency**: Ensures no duplicate images are taken during continuous detection events.
+### 📸 Screenshot Features
+- **Event Detection Snapshots**: Automatic image capture when a person is detected.
+- **Timestamp Overlay**: Each image contains a timestamp for reference.
+- **Organized Storage**: Screenshots are saved in the `snapshots/` directory, with millisecond precision naming.
+- **Smart Snapshot Frequency**: Takes snapshots every 2 seconds during continuous detection to avoid duplicates.
+- **Data Recovery**: If the camera disconnects mid-recording, screenshots can serve as backup evidence.
 
-### User Interface
-- **PyQt5 GUI**: Professional, easy-to-use desktop interface.
-- **Live Video Feed**: Real-time camera feed with detection bounding boxes.
+### 🖥️ User Interface
+- **Clean PyQt5 GUI**: A professional and intuitive desktop application interface.
+- **Live Video Display**: Real-time camera feed with detection bounding boxes.
 - **Status Indicators**:
-  - **Person Detection Status**: Displays whether a person is detected (Not Detected / DETECTED).
-  - **Recording Status**: Indicates whether the system is recording, in standby, or in cooldown.
-  - **System Health**: Shows the current system status (Monitoring / Stopped / Error).
+  - **Detection Status**: Shows detection state (Not Detected / DETECTED).
+  - **Recording Status**: Indicates whether the system is recording (Standby / RECORDING / COOLDOWN).
+  - **System Health**: Indicates overall system status (Monitoring / Stopped / Error).
+- **Color-Coded States**: Green (normal), Red (active), Orange (transition).
 - **Camera Selection**: Dropdown to select from available USB or built-in cameras.
-- **Resizable Window**: UI that adapts to different screen sizes.
+- **Resizable Window**: User-friendly interface that adapts to different screen sizes.
 
----
+### 🎥 Camera Support
+- **USB Camera Compatible**: Works with OBSBOT Tiny 2, standard USB webcams, and most V4L2-compliant cameras.
+- **Automatic Detection**: Scans system for connected cameras and identifies available devices.
+- **1920×1080 Capture**: Supports high-resolution capture at 30 FPS.
+- **Multi-Camera Ready**: System can be adapted for multiple simultaneous camera feeds in future updates.
 
 ## System Architecture
 
 ### Threading Model
 - **CameraThread**: Continuously captures frames from the USB camera at 30 FPS.
-- **DetectionThread**: Performs real-time YOLOv8 inference on captured frames.
+- **DetectionThread**: Runs YOLOv8 inference on captured frames to detect human presence.
 - **RecordingManager**: Manages recording state transitions (Standby → Detected → Cooldown).
-- **ScreenshotManager**: Handles automatic screenshot capture and timestamping during detection.
-- **Main UI Thread**: Handles GUI rendering and user interaction.
+- **ScreenshotManager**: Captures event-triggered screenshots with timestamp annotation.
+- **Main UI Thread**: Handles PyQt5 GUI rendering and user interactions.
 
 ### Data Flow
-```text
+```
 USB Camera (1920×1080, 30 FPS)
     ↓
 CameraThread (frame capture)
@@ -73,9 +75,9 @@ Image Output: snapshots/*.jpg
 ## Installation
 
 ### Prerequisites
-- Python 3.8+.
-- `pip` package manager.
-- USB camera or built-in webcam.
+- Python 3.8+
+- pip package manager
+- USB camera or built-in webcam
 
 ### Step 1: Clone the Repository
 ```bash
@@ -98,23 +100,26 @@ python security_monitor.py
 ## Usage
 
 ### Starting the Application
-1. Connect the USB camera to the computer.
-2. Run the application: `python security_monitor.py`.
+1. **Connect USB camera** to your computer.
+2. Run the application:
+   ```bash
+   python security_monitor.py
+   ```
 3. The system will automatically detect available cameras.
-4. Select the desired camera from the dropdown (USB camera is pre-selected).
-5. The system will enter monitoring mode and begin detection.
+4. **Select** your desired camera from the dropdown (USB camera is selected by default).
+5. The system will begin monitoring and will start recording when a person is detected.
 
 ### During Operation
-- **Live Video Feed**: Displays the real-time camera stream with detection bounding boxes.
-- **Status Indicators**:
-  - **Person Detection**: 🟢 Not Detected / 🔴 DETECTED.
-  - **Recording**: 🟢 Standby / 🔴 RECORDING / 🟡 COOLDOWN.
+- **Live Video Feed**: Displays the real-time camera feed with bounding boxes indicating detected persons.
+- **Status Updates**:
+  - **Detection Status**: 🟢 Not Detected / 🔴 DETECTED.
+  - **Recording Status**: 🟢 Standby / 🔴 RECORDING / 🟡 COOLDOWN.
   - **System Health**: 🟢 Monitoring / 🟡 Stopped / 🔴 Error.
-- **Fully Automated**: No manual control needed; system automatically starts and stops recording.
-- **Graceful Exit**: Press EXIT to stop all threads and close the application properly.
+- **No Manual Controls**: The system is fully automatic—no buttons required to start or stop recording.
+- **Graceful Exit**: Press `EXIT` to properly stop all threads and close the application.
 
 ### Output Files
-After running the system, the generated files will be stored as follows:
+After running the system, output files will be saved as follows:
 ```
 project-root/
 ├── recordings/
@@ -129,19 +134,21 @@ project-root/
 
 ## Configuration
 
+### Adjustable Parameters
+
 Edit `security_monitor.py` to customize the following parameters:
 
-### Detection Sensitivity
+#### Detection Sensitivity (Line ~73)
 ```python
-self.confidence_threshold = 0.5  # Range: 0.0-1.0 (higher values = stricter detection)
+self.confidence_threshold = 0.5  # Range: 0.0-1.0, higher values = stricter detection
 ```
 
-### Recording Cooldown
+#### Recording Cooldown (Line ~145)
 ```python
 self.cooldown_seconds = 5  # Seconds after last detection before stopping recording
 ```
 
-### Screenshot Frequency
+#### Screenshot Frequency (Line ~171)
 ```python
 self.screenshot_cooldown = 2  # Seconds between snapshots during detection
 ```
@@ -150,13 +157,20 @@ self.screenshot_cooldown = 2  # Seconds between snapshots during detection
 
 ## Performance Characteristics
 
-- **CPU Usage**: ~15-25% during monitoring (idle), ~30-40% during detection/recording.
-- **Memory Usage**: ~200-300 MB without models loaded, ~400-500 MB with models.
-- **GPU Acceleration**: Optional, for faster detection (requires CUDA support).
+### Resource Usage
+- **CPU**: ~15-25% during monitoring (idle), ~30-40% during detection/recording
+- **Memory**: ~200-300 MB base, ~400-500 MB with models loaded
+- **GPU**: Optional GPU acceleration available (requires CUDA support in `ultralytics`)
+- **Disk I/O**: Active only during recording events.
+
+### Detection Accuracy
+- **YOLOv8 nano model**: ~80% mAP on COCO dataset.
 - **Detection Latency**: ~30-50ms per frame.
-- **Storage Efficiency**:
-  - **Event-Driven Recording**: ~5-15 GB for 24 hours.
-  - **Snapshots**: ~1-3 GB for 24 hours.
+
+### Storage Efficiency
+- **Continuous Recording** (24 hours): ~150-200 GB.
+- **Event-Driven Recording** (24 hours, typical office): ~5-15 GB.
+- **Snapshots** (24 hours, typical office): ~1-3 GB.
 
 ---
 
@@ -167,8 +181,8 @@ detection-triggered-recorder/
 ├── README.md                    # This file
 ├── requirements.txt             # Python dependencies
 ├── security_monitor.py          # Main application script
-├── recordings/                  # Video output directory (created automatically)
-├── snapshots/                   # Screenshot output directory (created automatically)
+├── recordings/                  # Video output directory (auto-created)
+├── snapshots/                   # Screenshot output directory (auto-created)
 └── docs/
     ├── INSTALLATION.md          # Detailed installation guide
     ├── USAGE.md                 # Advanced usage scenarios
@@ -178,9 +192,17 @@ detection-triggered-recorder/
 
 ---
 
-## Dependencies
+## Requirements
 
+### `requirements.txt`
+This file contains the list of Python dependencies needed to run the application. To install them, use:
+
+```bash
+pip install -r requirements.txt
 ```
+
+#### Contents of `requirements.txt`
+```txt
 PyQt5==5.15.9              # GUI framework
 opencv-python==4.8.1.78    # Video capture and processing
 ultralytics==8.0.196       # YOLOv8 detection model
@@ -191,68 +213,12 @@ torch==2.0.1               # Deep learning backend
 
 ---
 
-## System Requirements
-
-### Minimum
-- Python 3.8+.
-- 4 GB RAM.
-- 2 GB free disk space.
-- USB camera (USB 2.0+).
-- Processor: Intel i5 or equivalent.
-
-### Recommended
-- Python 3.10+.
-- 8 GB RAM.
-- 20 GB free disk space (for video recordings).
-- USB 3.0 camera connection.
-- Processor: Intel i7 or higher.
-- GPU: NVIDIA GPU with CUDA support (optional but recommended).
-
-### Supported Operating Systems
-- ✅ **Windows 10/11**.
-- ✅ **macOS 10.14+**.
-- ✅ **Linux** (Ubuntu 18.04+, Debian, Fedora).
-
----
-
-## License
-
-MIT License — See [LICENSE](./LICENSE) for full details.
-
----
-
-## Acknowledgments
-
-- **YOLOv8**: Thanks to Ultralytics for providing cutting-edge object detection models.
-- **PyQt5**: For the powerful and efficient GUI framework.
-- **OpenCV**: For video capture and image processing functionalities.
-- **OBSBOT**: For high-quality USB cameras that support this system.
-
----
-
-## Contributing
-
-Contributions are welcome! Some areas for improvement include:
-- Multi-camera support.
-- Advanced filtering (reducing false positives).
-- Cloud integration for video storage.
-- Mobile app companion.
-- Performance optimizations.
-
-For contributions, please open a pull request on GitHub or create an issue.
-
----
-
-## Troubleshooting
+## Common Issues & Troubleshooting
 
 ### Camera Not Detected
-- Ensure the camera is properly connected and recognized by the operating system.
-- Check the camera driver or try a different USB port.
+- Ensure that the camera is properly connected and recognized by your system.
+- Check USB permissions (Linux: `chmod 666 /dev/video*`).
+- Update camera drivers or try a different USB port.
 
-### Low Detection Performance
-- Lower the `confidence_threshold` if the model is not detecting people.
-- Ensure good lighting and camera focus.
-
-### High CPU Usage
-- Use a lighter YOLO model (e.g., `yolov8n.pt`).
-- Enable
+### Detection Issues
+- **Low Detection Accuracy**: Increase the `confidence_threshold` for stricter
