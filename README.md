@@ -113,7 +113,7 @@ python build.py              # Build EXE (10-15 min)
 **Option B: From Source**
 ```bash
 pip install -r requirements.txt
-python OBSBOT_Tiny2_Intelligent_Security_Monitor.py
+main.py.py
 ```
 
 ---
@@ -202,7 +202,7 @@ confidence_threshold = 0.7
 ### Source Distribution
 - Requires Python 3.8+
 - Install: `pip install -r requirements.txt`
-- Run: `python OBSBOT_Tiny2_Intelligent_Security_Monitor.py`
+- Run: `main.py.py`
 
 ---
 
