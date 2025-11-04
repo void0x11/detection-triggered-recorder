@@ -10,8 +10,7 @@ An AI-powered security monitoring application purpose-built for OBSBOT Tiny2 USB
 
 ### Smart Detection & Recording
 - **Real-Time Detection**: YOLOv8 neural network processes 30 FPS video stream for instant human detection
-- **Automatic Recording**: Records only when humans detected
-- **Storage Effieceint**: it saves only videos when someone detected saves you tons of GBs.
+- **Automatic Recording**: Records only when humans detected (no wasted storage on empty scenes)
 - **Intelligent Cooldown**: 6-second recording buffer after person leaves frame prevents fragmented clips
 - **Continuous Monitoring**: System stays alert 24/7 in standby mode with minimal CPU usage
 
@@ -33,113 +32,170 @@ An AI-powered security monitoring application purpose-built for OBSBOT Tiny2 USB
 
 ---
 
-## 🎬 How It Works
+## 📸 Screenshots & Live Demonstration
 
-### Detection & Recording Flow
+### 1️⃣ Main Application GUI (Standby Mode)
 
-```
-Person Enters Frame
-        ↓
-[Detection: 🔴 DETECTED]
-        ↓
-Recording Starts (Video begins)
-[Recording: 🔴 RECORDING]
-        ↓
-Person Still In Frame
-        ↓
-Video Continues + Snapshot Every 15 Sec
-        ↓
-Person Leaves Frame
-        ↓
-[Recording: 🟡 COOLDOWN] (6 seconds)
-        ↓
-If Person Returns → Resume Recording
-If No Person After 6 Sec → Stop Recording
-[Recording: 🟢 Standby]
-```
+![Main GUI](https://github.com/void0x11/Obsbot-Intelligent-Security-Monitor/raw/main/media/GUI.png)
 
-### Why Snapshots Every 15 Seconds?
+**Application Status**: 
+- ✅ System actively monitoring 24/7
+- ✅ No person detected → Recording standby
+- ✅ Dark theme UI for comfortable viewing
+- ✅ Three status indicators clearly visible
 
-**Scenario: Camera Tampering or Disconnection**
-
-| Time | Event | Video | Snapshot |
-|------|-------|-------|----------|
-| 14:30:00 | Person detected | ▶️ Recording starts | 📸 Image 1 |
-| 14:30:15 | Person in frame | ▶️ Recording continues | 📸 Image 2 |
-| 14:30:30 | Person in frame | ▶️ Recording continues | 📸 Image 3 |
-| 14:30:45 | **Camera disconnected** | ❌ Recording stops | 📸 Image 4 |
-| 14:31:00 | Camera offline | ❌ No video | 📸 Image 5 (last capture) |
-
-**Result**: Even if camera goes offline, you have photographic evidence every 15 seconds starting from detection.
+**What You See**:
+- Camera selector at top (USB Camera 1)
+- Large live video feed (empty room)
+- Three status boxes: Detection, Recording, System
+- All indicators showing 🟢 (Green = Normal/Standby)
 
 ---
 
-## 📥 Installation & Setup
+### 2️⃣ Person Detected - Recording Started Instantly
 
-### Prerequisites
-- Windows 10/11, macOS, or Linux
-- OBSBOT Tiny2 USB camera (or compatible USB webcam)
-- 4GB RAM (8GB recommended)
-- 20GB free disk space (for recordings)
+![Person Detected](https://github.com/void0x11/Obsbot-Intelligent-Security-Monitor/raw/main/media/snapshot.jpg)
 
-### Quick Start
+**Instant Actions Triggered**:
+- 🔴 **DETECTED** indicator turns red
+- 🔴 **RECORDING** starts immediately
+- 📸 **First snapshot captured** with timestamp
+- 📹 **Video file created** in recordings folder
 
-**Option A: Standalone Executable** (Recommended)
-```bash
-# Just download and run:
-OBSBOT Tiny2 Intelligent Security Monitor.exe
+**What's Happening**:
+- Person visible in video feed with green bounding box
+- Detection count shows (1) person detected
+- Recording status shows active 🔴
+- Timestamp overlay on snapshot: `2025-11-04 14:30:15`
+
+**Timeline Start**:
 ```
-No Python or additional setup needed!
-
-**Option B: From Source**
-```bash
-pip install -r requirements.txt
-python OBSBOT_Tiny2_Intelligent_Security_Monitor.py
+T=0s    → Person enters frame
+T=0s    → YOLOv8 detection triggers
+T=0s    → Recording starts
+T=0s    → Snapshot #1 captured & timestamped
 ```
 
 ---
 
-## 🚀 Usage
+### 3️⃣ Evidence Backup - Last Snapshot Before Camera Disconnect
 
-1. **Connect OBSBOT Tiny2**: USB connection to computer
-2. **Launch Application**: Run the executable or Python script
-3. **Auto Detection**: System automatically detects and selects the camera
-4. **Start Monitoring**: System enters continuous monitoring mode immediately
-5. **Monitor Indicators**:
-   - Green = Safe/Normal
-   - Red = Active/Alert
-   - Orange = Transitional (Cooldown)
-6. **Exit**: Click "Exit" button to cleanly stop all recording and close application
+![Last Capture](https://github.com/void0x11/Obsbot-Intelligent-Security-Monitor/raw/main/media/still.png)
 
-### Output Files
+**Critical Feature Demonstration**:
 
-After monitoring, check:
-- **`recordings/`** - Video files: `security_YYYYMMDD_HHMMSS.mp4`
-- **`snapshots/`** - Images: `snapshot_YYYYMMDD_HHMMSS_mmm.jpg` (with timestamp overlay)
+This screenshot shows why **15-second snapshots are essential for evidence preservation**.
+
+**Scenario: Person detected, then camera loses USB connection**
+
+```
+TRADITIONAL SYSTEM (Continuous Recording Only):
+═════════════════════════════════════════════════
+T=0s  → Recording starts ▶️
+T=15s → Recording continues ▶️
+T=30s → Recording continues ▶️
+T=45s → CAMERA DISCONNECTED ❌
+        Video file LOST ❌
+RESULT: NO EVIDENCE ❌❌❌
+
+OUR SYSTEM (Recording + 15-Second Snapshots):
+═══════════════════════════════════════════════
+T=0s  → Recording starts + Snapshot #1 📸
+T=15s → Recording continues + Snapshot #2 📸
+T=30s → Recording continues + Snapshot #3 📸
+T=45s → CAMERA DISCONNECTED ❌ + Snapshot #4 📸 CAPTURED!
+        Video may be lost, BUT 4 PHOTOS ARE SAFE ✅
+RESULT: COMPLETE EVIDENCE ✅✅✅
+```
+
+**Each Snapshot Includes**:
+- ✅ Exact timestamp (YYYY-MM-DD HH:MM:SS)
+- ✅ High-quality person image
+- ✅ Backup proof if video fails
+- ✅ Cannot be disputed
 
 ---
 
-## ⚙️ Configuration
+## 🎬 How It Works - Complete Workflow
 
-All settings editable in `OBSBOT_Tiny2_Intelligent_Security_Monitor.py`:
+### Detection → Recording → Snapshots → Storage
 
-| Setting | Location | Value | Purpose |
-|---------|----------|-------|---------|
-| Detection Confidence | Line ~73 | 0.0-1.0 | Higher = stricter detection |
-| Recording Cooldown | Line ~145 | Seconds | How long after person leaves |
-| Snapshot Frequency | Line ~171 | Seconds | Interval between snapshots (15 recommended) |
+**State Machine Flow**:
 
-### Recommended Configuration
+```
+┌─────────────────────────────────────────────────────────┐
+│ STANDBY (Monitoring)                                    │
+│ 🟢 Detection: Not Detected                              │
+│ 🟢 Recording: Standby                                   │
+│ 🟢 System: Monitoring                                   │
+└────────────────┬────────────────────────────────────────┘
+                 │
+        Person enters frame
+                 ↓
+┌─────────────────────────────────────────────────────────┐
+│ DETECTION TRIGGERED                                     │
+│ 🔴 Detection: DETECTED (1)                              │
+│ [Green bounding box appears in video]                   │
+└────────────────┬────────────────────────────────────────┘
+                 │
+        Detection threshold met
+                 ↓
+┌─────────────────────────────────────────────────────────┐
+│ RECORDING ACTIVE                                        │
+│ 🔴 Recording: RECORDING                                 │
+│ 📹 Video file created: security_YYYYMMDD_HHMMSS.mp4    │
+│ 📸 Snapshot taken every 15 seconds                      │
+│ ⏱️ Timer counting up                                     │
+└────────────────┬────────────────────────────────────────┘
+                 │
+     Person stays in frame or leaves
+                 ↓
+         ┌───────┴───────┐
+         ↓               ↓
+    Person In      Person Out
+      Frame          Frame
+         │               │
+    Continue        Start Cooldown
+     Recording       (6 seconds)
+         │               │
+         │          🟡 COOLDOWN
+         │          [Waiting...]
+         │               │
+         └───────┬───────┘
+                 │
+        If returns within 6s
+        OR cooldown expires
+                 ↓
+┌─────────────────────────────────────────────────────────┐
+│ RECORDING STOPPED                                       │
+│ 🟢 Recording: Standby                                   │
+│ ✅ Video file saved                                      │
+│ ✅ All snapshots saved with timestamps                  │
+│ Ready for next detection                                │
+└────────────────┬────────────────────────────────────────┘
+                 │
+        Return to STANDBY
+                 ↓
+         [Cycle Repeats]
+```
 
-```python
-# Detection sensitivity - balanced for indoor environments
-confidence_threshold = 0.5  # Good balance between sensitivity and accuracy
+---
 
-# Recording cooldown - 6 seconds
-cooldown_seconds = 6  # Enough to capture context, minimal fragmentation
+## 📊 Real-World Example - Event Timeline
 
-# Snapshot frequency - every 15 seconds
-screenshot_cooldown = 15  # Provides clear timeline of detection event
+```
+Time      | Detection | Recording | Event                    | Files Created
+──────────┼───────────┼───────────┼──────────────────────────┼────────────────
+14:30:00  | 🔴 START  | 🔴 START  | Person enters frame      | 📹 video_start.mp4
+          |           |           |                          | 📸 snapshot_1.jpg
+14:30:15  | 🔴 ON     | 🔴 REC    | Person detected          | 📸 snapshot_2.jpg
+14:30:30  | 🔴 ON     | 🔴 REC    | Continuous monitoring   | 📸 snapshot_3.jpg
+14:30:45  | 🔴 ON     | 🔴 REC    | Still in frame          | 📸 snapshot_4.jpg
+15:01:00  | 🟢 OFF    | 🟡 COOL   | Person left frame       | 📸 snapshot_5.jpg
+15:01:06  | 🟢 OFF    | 🟢 STOP   | Cooldown expired        | ✅ video_saved.mp4
+          |           |           |                          |
+RESULT    | 1 min     | 1:06      | Complete evidence       | 1 video + 5 photos
+          | event     | duration  | preserved               |
 ```
 
 ---
@@ -160,6 +216,63 @@ screenshot_cooldown = 15  # Provides clear timeline of detection event
 - **RAM**: ~300MB base, ~500MB with models loaded
 - **Disk I/O**: Only during recording events (minimal impact)
 - **Network**: Not required (works offline)
+
+---
+
+## 📥 Installation & Setup
+
+### Prerequisites
+- Windows 10/11, macOS, or Linux
+- OBSBOT Tiny2 USB camera (or compatible USB webcam)
+- 4GB RAM (8GB recommended)
+- 20GB free disk space (for recordings)
+
+### Quick Start
+
+**Option A: Standalone Executable** (Recommended)
+```bash
+python cache_model.py        # First time only (2-3 min)
+python build.py              # Build EXE (10-15 min)
+# Run: dist\OBSBOT Tiny2 Intelligent Security Monitor.exe
+```
+
+**Option B: From Source**
+```bash
+pip install -r requirements.txt
+python OBSBOT_Tiny2_Intelligent_Security_Monitor.py
+```
+
+---
+
+## 🚀 Usage
+
+1. **Connect OBSBOT Tiny2**: USB connection to computer
+2. **Launch Application**: Run the executable or Python script
+3. **Auto Detection**: System automatically detects and selects the camera
+4. **Start Monitoring**: System enters continuous monitoring mode immediately
+5. **Monitor Indicators**:
+   - 🟢 Green = Safe/Normal
+   - 🔴 Red = Active/Alert
+   - 🟡 Orange = Transitional (Cooldown)
+6. **Exit**: Click "Exit" button to cleanly stop all recording and close application
+
+### Output Files
+
+After monitoring, check:
+- **`recordings/`** - Video files: `security_YYYYMMDD_HHMMSS.mp4`
+- **`snapshots/`** - Images: `snapshot_YYYYMMDD_HHMMSS_mmm.jpg` (with timestamp overlay)
+
+---
+
+## ⚙️ Configuration
+
+All settings editable in `OBSBOT_Tiny2_Intelligent_Security_Monitor.py`:
+
+| Setting | Location | Value | Purpose |
+|---------|----------|-------|---------|
+| Detection Confidence | Line ~73 | 0.0-1.0 | Higher = stricter detection |
+| Recording Cooldown | Line ~145 | Seconds | How long after person leaves |
+| Snapshot Frequency | Line ~171 | Seconds | Interval between snapshots (15 recommended) |
 
 ---
 
@@ -263,8 +376,6 @@ MIT License - Open for academic and commercial use
 ---
 
 **Version**: 1.0.0 | **Status**: Production Ready ✅
-
-For updates and source code: [GitHub Repository](https://github.com/void0x11/OBSBOT-Intelligent-Security-Monitor)
 
 ---
 
