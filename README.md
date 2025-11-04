@@ -2,6 +2,10 @@
 
 An intelligent, event-driven surveillance system that automatically captures video and screenshots when humans are detected in real-time using **AI vision processing**.
 
+# Working Example
+
+
+
 ## Overview
 
 **Detection-Triggered Recorder** is a sophisticated security monitoring application designed for **research** and **autonomous surveillance**. It continuously monitors a USB-connected camera feed, performs real-time human detection using **YOLOv8**, and automatically initiates recording only when humans are detected. This event-driven approach drastically reduces storage requirements compared to traditional 24/7 recording, while still ensuring comprehensive event documentation.
