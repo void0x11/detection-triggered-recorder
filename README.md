@@ -194,15 +194,78 @@ After monitoring, check:
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Configuration & Customization
 
-All settings editable in `OBSBOT_Tiny2_Intelligent_Security_Monitor.py`:
+Edit these settings in `OBSBOT_Tiny2_Intelligent_Security_Monitor.py`:
 
-| Setting | Location | Value | Purpose |
-|---------|----------|-------|---------|
-| Detection Confidence | Line ~73 | 0.0-1.0 | Higher = stricter detection |
-| Recording Cooldown | Line ~145 | Seconds | How long after person leaves |
-| Snapshot Frequency | Line ~171 | Seconds | Interval between snapshots (15 recommended) |
+---
+
+### 🎯 Main Settings
+
+| Setting | Location | Default | Range | What It Does |
+|---------|----------|---------|-------|--------------|
+| **Cooldown Duration** | Line ~145 | 6s | 3-30s | How long to record after person leaves |
+| **Snapshot Frequency** | Line ~171 | 15s | 5-60s | Time between snapshot captures |
+| **Detection Confidence** | Line ~73 | 0.5 | 0.0-1.0 | Stricter = higher confidence needed |
+| **Video Resolution** | Line ~51-53 | 1920×1080 | 1280×720 to 2560×1440 | Output quality |
+
+---
+
+### 💡 Quick Presets
+
+**Standard Monitoring** (RECOMMENDED):
+```python
+cooldown_seconds = 6
+screenshot_cooldown = 15
+confidence_threshold = 0.5
+```
+
+**Security Critical**:
+```python
+cooldown_seconds = 15
+screenshot_cooldown = 10
+confidence_threshold = 0.6
+```
+
+**Storage Saving**:
+```python
+cooldown_seconds = 3
+screenshot_cooldown = 30
+confidence_threshold = 0.7
+```
+
+---
+
+### 📝 Advanced Settings
+
+**Timestamp Format** (Line ~190):
+```python
+# Default: 2025-11-04 14:30:15
+datetime_text = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+```
+
+**Timestamp Position** (Line ~189):
+```python
+# (x, y) coordinates on image
+cv2.putText(annotated_frame, datetime_text, (20, 50), ...)
+# Top-left: (20, 50) | Top-right: (1600, 50) | Bottom: (20, 1050)
+```
+
+**Output Folders**:
+```python
+save_dir = Path('recordings')  # Video files
+save_dir = Path('snapshots')   # Images
+```
+
+---
+
+### 🔄 How to Edit
+
+1. Open `OBSBOT_Tiny2_Intelligent_Security_Monitor.py`
+2. Find the line number from table above
+3. Change the value
+4. Save file
+5. Run: `python build.py` (if using .exe) or restart app
 
 ---
 
