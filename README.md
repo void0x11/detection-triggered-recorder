@@ -116,37 +116,6 @@ RESULT: COMPLETE EVIDENCE ✅✅✅
 
 ---
 
-## 🎬 How It Works - Complete Workflow
-
-### Detection → Recording → Snapshots → Storage
-
-**State Machine Flow**:
-
-```
-B -->|Detection threshold met| C["🔴 RECORDING ACTIVE<br/>Recording: RECORDING<br/>📹 Video: security_YYYYMMDD_HHMMSS.mp4<br/>📸 Snapshot every 15s<br/>⏱️ Timer counting"]
-
-C -->|Person stays in frame| C
-C -->|Person leaves frame| D{"Person Status"}
-
-D -->|Still in frame| E["Continue Recording"]
-D -->|Left frame| F["🟡 COOLDOWN<br/>Waiting 6 seconds..."]
-
-E -->|Person still there| C
-
-F -->|Person returns<br/>within 6s| C
-F -->|Cooldown expires<br/>after 6s| G["🟢 RECORDING STOPPED<br/>Recording: Standby<br/>✅ Video file saved<br/>✅ Snapshots saved with timestamps<br/>Ready for next detection"]
-
-G -->|Return to STANDBY| A
-
-style A fill:#90EE90
-style B fill:#FF6B6B
-style C fill:#FF6B6B
-style F fill:#FFD700
-style G fill:#90EE90
-```
-
----
-
 ## 📊 Real-World Example - Event Timeline
 
 | Time | Detection | Recording | Event | Files Created |
