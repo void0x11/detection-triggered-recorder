@@ -93,7 +93,7 @@ Even if video fails, you have timestamped photo evidence every 15 seconds.
 
 ---
 
-## 📥 Installation & Setup
+## 📥The Installation & Setup
 
 ### Prerequisites
 - Windows 10/11, macOS, or Linux
